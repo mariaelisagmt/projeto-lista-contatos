@@ -1,40 +1,34 @@
 import { Button } from "@/components/ui/button"
 import { Table, TableHeader, TableRow, TableHead, TableBody } from "@/components/ui/table"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AddContactModal } from './components/addContactModal'
 import { ContactTableRow } from "./components/contactTableRow"
 import { MagnifyingGlass, Plus } from "@phosphor-icons/react"
+import { getContato } from "../api/contato"
 
 export function List() {
-	const mock = [
-			{
-				id: 2,
-				nome: "Mateus",
-				telefone: 123,
-				email: "exemplo@email.com"
-			},
-			{
-				id: 3,
-				nome: "Maria",
-				telefone: 123,
-				email: "exemplo@email.com"
-			},
-			{
-				id: 4,
-				nome: "Felipe",
-				telefone: 123,
-				email: "exemplo@email.com"
-			},
-			{
-				id: 5,
-				nome: "George",
-				telefone: 123,
-				email: "exemplo@email.com"
-			}
-	]
-
+  const [contatos , setContatos] = useState([]);
   const [isAddContactOpen, setIsAddContactOpen] = useState(false)
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const data = await getContato();
+        setContatos(data);
+      } catch (error) {
+        console.error('Erro ao carregar contatos', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+
 
   return (
     <div className="flex flex-col gap-6 py-6 px-4 md:px-6">
@@ -71,9 +65,9 @@ export function List() {
         <TableBody>
 
 					{
-						mock.map(item => {
+						contatos.map(item => {
 							return (
-                <ContactTableRow key={item.id} contact={item}/>
+                <ContactTableRow key={item} contact={item}/>
 							)
 						})
 					}
