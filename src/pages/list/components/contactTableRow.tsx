@@ -19,7 +19,7 @@ export function ContactTableRow({ contact }: ContactTableRow) {
   
   return (
     <TableRow>
-      <TableCell className="font-medium">{contact.email}</TableCell>
+      <TableCell className="font-medium">{contact.nome}</TableCell>
       <TableCell>{contact.email}</TableCell>
       <TableCell>{contact.telefone}</TableCell>
       <TableCell className="text-right">
