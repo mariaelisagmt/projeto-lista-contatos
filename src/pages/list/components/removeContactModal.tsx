@@ -1,8 +1,7 @@
 import { DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { FormEvent, useState } from "react"
-import { removeContato } from "@/pages/api/removerContato"
-import { useNavigate } from "react-router-dom"
+import { FormEvent} from "react"
+import { removeContato } from "@/pages/api/removerContato";
 
 interface RemoveContactProps {
   id: number;
