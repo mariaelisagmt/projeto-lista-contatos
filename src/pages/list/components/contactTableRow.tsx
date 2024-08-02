@@ -11,10 +11,11 @@ interface ContactTableRow {
     nome: string,
     telefone: number,
     email: string
-  }
+  },
+  onSuccessDelete: () => void; 
 }
 
-export function ContactTableRow({ contact }: ContactTableRow) {
+export function ContactTableRow({ contact, onSuccessDelete }: ContactTableRow) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   
   return (
@@ -32,7 +33,7 @@ export function ContactTableRow({ contact }: ContactTableRow) {
             </Button>
           </DialogTrigger>
 
-          <RemoveContactModal id={contact.id}/>
+          <RemoveContactModal id={contact.id} onSuccess={onSuccessDelete}/>
         </Dialog>
         
       </TableCell>

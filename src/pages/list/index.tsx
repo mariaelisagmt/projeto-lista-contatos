@@ -5,26 +5,38 @@ import { useEffect, useState } from "react"
 import { AddContactModal } from './components/addContactModal'
 import { ContactTableRow } from "./components/contactTableRow"
 import { MagnifyingGlass, Plus } from "@phosphor-icons/react"
-import { getContato } from "../api/contato"
+import { getContato } from "../api/obterContatos"
+
+interface Contato {
+  id: number,
+  nome: string,
+  telefone: number,
+  email: string
+}
 
 export function List() {
-  const [contatos , setContatos] = useState([]);
+  const [contatos , setContatos] = useState<Contato[]>([]);
   const [isAddContactOpen, setIsAddContactOpen] = useState(false)
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const data = await getContato();
-        setContatos(data);
-      } catch (error) {
-        console.error('Erro ao carregar contatos', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadContacts = async () => {
+    try {
+      const data = await getContato();
+      setContatos(data);
+    } catch (error) {
+      console.error('Erro ao carregar contatos', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchUsers();
+  const handleRemoveSuccess = () => {
+    alert("Contato apagado com sucesso!")
+    loadContacts();
+  };
+
+  useEffect(() => {
+    loadContacts();
   }, []);
 
   if (loading) return <p>Loading...</p>;
@@ -67,7 +79,7 @@ export function List() {
 					{
 						contatos.map(item => {
 							return (
-                <ContactTableRow key={item} contact={item}/>
+                <ContactTableRow key={item.id} contact={item} onSuccessDelete={handleRemoveSuccess}/>
 							)
 						})
 					}
